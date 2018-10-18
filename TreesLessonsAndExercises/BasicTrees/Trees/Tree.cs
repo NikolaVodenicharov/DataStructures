@@ -25,6 +25,7 @@ public class Tree<T>
     public void Each(Action<T> action)
     {
         action(this.Value);
+
         foreach (var child in this.Children)
         {
             child.Each(action);
