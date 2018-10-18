@@ -7,12 +7,13 @@
 
     public class Program
     {
-        private static IDictionary<int, Tree<int>> nodeByValue = new Dictionary<int, Tree<int>>();
+        private static IDictionary<int, Tree<int>> nodesByValue = new Dictionary<int, Tree<int>>();
 
         public static void Main()
         {
             ReadTree();
-            PrintLeafsValues();
+            var values = GetMiddleNodes().Select(l => l.Value).OrderBy(n => n);
+            PrintLeafsValues("Middle nodes: ", values);
         }
 
         private static void ReadTree()
@@ -33,37 +34,46 @@
             parentNode.Children.Add(childNode);
             childNode.Parent = parentNode;
         }
+
         private static Tree<int> GetNodeByValue(int value)
         {
-            if (!nodeByValue.ContainsKey(value))
+            if (!nodesByValue.ContainsKey(value))
             {
-                nodeByValue[value] = new Tree<int>(value);
+                nodesByValue[value] = new Tree<int>(value);
             }
 
-            return nodeByValue[value];
+            return nodesByValue[value];
         }
-
+        private static Tree<int> GetRootNode()
+        {
+            return nodesByValue.Values.FirstOrDefault(x => x.Parent == null);
+        }
         private static ICollection<Tree<int>> GetLeafNodes()
         {
-            return nodeByValue.Values.Where(x => x.Children.Count == 0).Select(x => x).ToList();
+            return nodesByValue.Values.Where(x => x.Children.Count == 0).Select(x => x).ToList();
         }
-        private static void PrintLeafsValues()
+        private static ICollection<Tree<int>> GetMiddleNodes()
         {
-            var values = GetLeafNodes().Select(l => l.Value).OrderBy(n => n);
+            return nodesByValue
+                .Values
+                .Where(n => 
+                    n.Parent != null &&
+                    n.Children.Count > 0)
+                .Select(n => n)
+                .ToList();
+        }
 
+        private static void PrintLeafsValues(string text, IEnumerable<int> values)
+        {
             var sb = new StringBuilder();
-            sb.Append("Leaf nodes: ");
+            sb.Append(text);
+
             foreach (var value in values)
             {
                 sb.Append($"{value} ");
             }
 
             Console.WriteLine(sb);
-        }
-
-        private static Tree<int> GetRootNode()
-        {
-            return nodeByValue.Values.FirstOrDefault(x => x.Parent == null);
         }
     }
 }
