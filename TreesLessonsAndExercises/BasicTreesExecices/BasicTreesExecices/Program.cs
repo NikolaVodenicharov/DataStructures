@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     public class Program
     {
@@ -11,9 +12,7 @@
         public static void Main()
         {
             ReadTree();
-            var rootNode = GetRootNode();
-
-            rootNode.Print();
+            PrintLeafsValues();
         }
 
         private static void ReadTree()
@@ -42,6 +41,24 @@
             }
 
             return nodeByValue[value];
+        }
+
+        private static ICollection<Tree<int>> GetLeafNodes()
+        {
+            return nodeByValue.Values.Where(x => x.Children.Count == 0).Select(x => x).ToList();
+        }
+        private static void PrintLeafsValues()
+        {
+            var values = GetLeafNodes().Select(l => l.Value).OrderBy(n => n);
+
+            var sb = new StringBuilder();
+            sb.Append("Leaf nodes: ");
+            foreach (var value in values)
+            {
+                sb.Append($"{value} ");
+            }
+
+            Console.WriteLine(sb);
         }
 
         private static Tree<int> GetRootNode()
