@@ -12,7 +12,8 @@
         {
             ReadTree();
             var rootNode = GetRootNode();
-            Console.WriteLine(rootNode.Value);
+
+            rootNode.Print();
         }
 
         private static void ReadTree()

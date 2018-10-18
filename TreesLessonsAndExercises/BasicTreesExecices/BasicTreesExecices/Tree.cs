@@ -20,5 +20,15 @@
         public T Value { get; private set; }
         public Tree<T> Parent { get; set; }
         public IList<Tree<T>> Children { get; private set; }
+
+        public void Print(int indent = 0)
+        {
+            Console.Write(new string(' ', indent * 2));
+            Console.WriteLine(this.Value);
+            foreach (var child in this.Children)
+            {
+                child.Print(indent + 1);
+            }
+        }
     }
 }
