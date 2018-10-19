@@ -30,5 +30,24 @@
                 child.Print(indent + 1);
             }
         }
+
+        //public IEnumerable<T> OrderDFS()
+        //{
+        //    var elements = new List<T>();
+
+        //    this.DFS(this, elements);
+
+        //    return elements;
+        //}
+
+        //private void DFS(Tree<T> tree, List<T> elements)
+        //{
+        //    foreach (var children in tree.Children)
+        //    {
+        //        this.DFS(children, elements);
+        //    }
+
+        //    elements.Add(tree.Value);
+        //}
     }
 }

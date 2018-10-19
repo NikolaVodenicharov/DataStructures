@@ -12,8 +12,8 @@
         public static void Main()
         {
             ReadTree();
-            var values = GetMiddleNodes().Select(l => l.Value).OrderBy(n => n);
-            PrintLeafsValues("Middle nodes: ", values);
+            var deepestNodeValue = GetDeepestNodeValue();
+            Console.WriteLine($"Deepest node: {deepestNodeValue}");
         }
 
         private static void ReadTree()
@@ -44,14 +44,17 @@
 
             return nodesByValue[value];
         }
+
         private static Tree<int> GetRootNode()
         {
             return nodesByValue.Values.FirstOrDefault(x => x.Parent == null);
         }
+
         private static ICollection<Tree<int>> GetLeafNodes()
         {
             return nodesByValue.Values.Where(x => x.Children.Count == 0).Select(x => x).ToList();
         }
+
         private static ICollection<Tree<int>> GetMiddleNodes()
         {
             return nodesByValue
@@ -63,7 +66,36 @@
                 .ToList();
         }
 
-        private static void PrintLeafsValues(string text, IEnumerable<int> values)
+        private static int GetDeepestNodeValue()
+        {
+            var leafs = GetLeafNodes();
+            var deepestNodeValue = 0;
+            var depth = 0;
+
+            foreach (var leaf in leafs)
+            {
+                var currentLeafDepth = GetNodeDepth(leaf);
+
+                if (currentLeafDepth > depth)
+                {
+                    deepestNodeValue = leaf.Value;
+                    depth = currentLeafDepth;
+                }
+            }
+
+            return deepestNodeValue;
+        }
+        private static int GetNodeDepth(Tree<int> tree, int depth = 1)
+        {
+            if (tree.Parent != null)
+            {
+                return GetNodeDepth(tree.Parent, depth + 1);
+            }
+
+            return depth;
+        }
+
+        private static void PrintValues(string text, IEnumerable<int> values)
         {
             var sb = new StringBuilder();
             sb.Append(text);
