@@ -12,7 +12,10 @@
         public static void Main()
         {
             ReadTree();
-            var result = GetLongestPathValues();
+            var pathSum = int.Parse(Console.ReadLine());
+
+            var paths = GetPathsEqualToSum(pathSum);
+            var result = AppendPaths(paths, pathSum);
             Console.WriteLine(result);
         }
 
@@ -98,34 +101,69 @@
 
         private static string GetLongestPathValues()
         {
-            var path = FindLongestPath();
+            var deepestNode = GetDeepestNode();
+            var path = GetTreePathValues(deepestNode);
             var sb = AppendPath(path);
 
             return sb.ToString();
         }
-        private static Stack<int> FindLongestPath()
+        private static IList<int> GetTreePathValues(Tree<int> tree)
         {
-            var deepestNode = GetDeepestNode();
+            var path = new List<int>();
 
-            var path = new Stack<int>();
-
-            var currentNode = deepestNode;
-            while (currentNode != null)
+            var current = tree;
+            while (current != null)
             {
-                path.Push(currentNode.Value);
-                currentNode = currentNode.Parent;
+                path.Add(current.Value);
+                current = current.Parent;
             }
 
             return path;
         }
-        private static StringBuilder AppendPath(Stack<int> path)
+        private static StringBuilder AppendPath(IList<int> path)
         {
             var sb = new StringBuilder();
             sb.Append("Longest path: ");
 
-            while (path.Count > 0)
+            for (int i = path.Count - 1; i >= 0; i--)
             {
-                sb.Append($"{path.Pop()} ");
+                sb.Append($"{path[i]} ");
+            }
+
+            return sb;
+        }
+
+        private static List<IList<int>> GetPathsEqualToSum(int sum)
+        {
+            var paths = new List<IList<int>>();
+
+            var leafs = GetLeafNodes();
+
+            foreach (var leaf in leafs)
+            {
+                var path = GetTreePathValues(leaf);
+
+                if (path.Sum() == 27)
+                {
+                    paths.Add(path);
+                }
+            }
+
+            return paths;
+        }
+        private static StringBuilder AppendPaths(IList<IList<int>> paths, int sum)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Paths of sum {sum}: ");
+
+            foreach (var path in paths)
+            {
+                for (int i = path.Count - 1; i >= 0; i--)
+                {
+                    sb.Append($"{path[i]} ");
+                }
+
+                sb.AppendLine();
             }
 
             return sb;
