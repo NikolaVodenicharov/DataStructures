@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Trees
+﻿namespace Trees
 {
-    class Launcher
+    public class Launcher
     {
+        public static void Main(string[] args)
+        {
+
+        }
     }
 }
