@@ -49,5 +49,26 @@
 
         //    elements.Add(tree.Value);
         //}
+
+        public IEnumerable<T> BFS()
+        {
+            var elements = new List<T>();
+
+            var trees = new Queue<Tree<T>>();
+            trees.Enqueue(this);
+
+            while (trees.Count > 0)
+            {
+                var tree = trees.Dequeue();
+                elements.Add(tree.Value);
+
+                foreach (var child in tree.Children)
+                {
+                    trees.Enqueue(child);
+                }
+            }
+
+            return elements;
+        }
     }
 }

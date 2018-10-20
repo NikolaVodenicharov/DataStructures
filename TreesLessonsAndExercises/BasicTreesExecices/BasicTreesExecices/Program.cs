@@ -12,10 +12,10 @@
         public static void Main()
         {
             ReadTree();
-            var pathSum = int.Parse(Console.ReadLine());
+            var subtreeSum = int.Parse(Console.ReadLine());
 
-            var paths = GetPathsEqualToSum(pathSum);
-            var result = AppendPaths(paths, pathSum);
+            var subtreesValues = GetSubtreesEqualToGivenSum(subtreeSum);
+            var result = AppendPaths(subtreesValues, subtreeSum);
             Console.WriteLine(result);
         }
 
@@ -133,15 +133,13 @@
             return sb;
         }
 
-        private static List<IList<int>> GetPathsEqualToSum(int sum)
+        private static List<IList<int>> GetPathsEqualToSum(ICollection<Tree<int>> trees, int sum)
         {
             var paths = new List<IList<int>>();
 
-            var leafs = GetLeafNodes();
-
-            foreach (var leaf in leafs)
+            foreach (var tree in trees)
             {
-                var path = GetTreePathValues(leaf);
+                var path = GetTreePathValues(tree);
 
                 if (path.Sum() == 27)
                 {
@@ -151,22 +149,41 @@
 
             return paths;
         }
-        private static StringBuilder AppendPaths(IList<IList<int>> paths, int sum)
+        private static StringBuilder AppendPaths(IList<IList<int>> collections, int sum)
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"Paths of sum {sum}: ");
+            sb.AppendLine($"Subtrees of sum {sum}: ");
 
-            foreach (var path in paths)
+            foreach (var collection in collections)
             {
-                for (int i = path.Count - 1; i >= 0; i--)
+                for (int i = collection.Count - 1; i >= 0; i--)
                 {
-                    sb.Append($"{path[i]} ");
+                    sb.Append($"{collection[i]} ");
                 }
 
                 sb.AppendLine();
             }
 
             return sb;
+        }
+
+        private static IList<IList<int>> GetSubtreesEqualToGivenSum(int sum)
+        {
+            var subtreesValues = new List<IList<int>>();
+
+            var middleNodes = GetMiddleNodes();
+
+            foreach (var node in middleNodes)
+            {
+                var values = node.BFS();
+
+                if (values.Sum() == sum)
+                {
+                    subtreesValues.Add(values.ToList());
+                }
+            }
+
+            return subtreesValues;
         }
 
         private static void PrintValues(string text, IEnumerable<int> values)
