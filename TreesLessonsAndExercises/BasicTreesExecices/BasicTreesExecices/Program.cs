@@ -12,8 +12,8 @@
         public static void Main()
         {
             ReadTree();
-            var deepestNodeValue = GetDeepestNodeValue();
-            Console.WriteLine($"Deepest node: {deepestNodeValue}");
+            var result = GetLongestPathValues();
+            Console.WriteLine(result);
         }
 
         private static void ReadTree()
@@ -66,10 +66,11 @@
                 .ToList();
         }
 
-        private static int GetDeepestNodeValue()
+        private static Tree<int> GetDeepestNode()
         {
             var leafs = GetLeafNodes();
-            var deepestNodeValue = 0;
+
+            Tree<int> deepestNode = null;
             var depth = 0;
 
             foreach (var leaf in leafs)
@@ -78,12 +79,12 @@
 
                 if (currentLeafDepth > depth)
                 {
-                    deepestNodeValue = leaf.Value;
+                    deepestNode = leaf;
                     depth = currentLeafDepth;
                 }
             }
 
-            return deepestNodeValue;
+            return deepestNode;
         }
         private static int GetNodeDepth(Tree<int> tree, int depth = 1)
         {
@@ -93,6 +94,41 @@
             }
 
             return depth;
+        }
+
+        private static string GetLongestPathValues()
+        {
+            var path = FindLongestPath();
+            var sb = AppendPath(path);
+
+            return sb.ToString();
+        }
+        private static Stack<int> FindLongestPath()
+        {
+            var deepestNode = GetDeepestNode();
+
+            var path = new Stack<int>();
+
+            var currentNode = deepestNode;
+            while (currentNode != null)
+            {
+                path.Push(currentNode.Value);
+                currentNode = currentNode.Parent;
+            }
+
+            return path;
+        }
+        private static StringBuilder AppendPath(Stack<int> path)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Longest path: ");
+
+            while (path.Count > 0)
+            {
+                sb.Append($"{path.Pop()} ");
+            }
+
+            return sb;
         }
 
         private static void PrintValues(string text, IEnumerable<int> values)
