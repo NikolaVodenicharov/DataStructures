@@ -227,9 +227,26 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
 
     public T Ceiling(T element)
     {
-        throw new NotImplementedException();
-    }
+        if (this.root == null)
+        {
+            throw new InvalidOperationException(EmptyCollectionMessage);
+        }
 
+        var current = this.root;
+        while (current != null)
+        {
+            if (current.Value.CompareTo(element) > 0)
+            {
+                return current.Value;
+            }
+            else
+            {
+                current = current.Right;
+            }
+        }
+
+        throw new InvalidOperationException("There is no element bigger that given.");
+    }
     public T Floor(T element)
     {
         if (this.root == null)

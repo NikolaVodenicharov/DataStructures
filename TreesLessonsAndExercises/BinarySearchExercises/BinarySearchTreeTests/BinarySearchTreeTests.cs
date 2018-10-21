@@ -209,7 +209,7 @@
         }
 
         [TestMethod]
-        public void Floor()
+        public void Floor_ExistingSmallerElement()
         {
             // Arrange
             var tree = new BinarySearchTree<int>();
@@ -244,6 +244,44 @@
 
             // Act
             var firstSmallerElement = tree.Floor(1);
+        }
+
+        [TestMethod]
+        public void Ceiling_ExistingBiggerElement()
+        {
+            // Arrange
+            var tree = new BinarySearchTree<int>();
+            tree.Insert(5);
+            tree.Insert(7);
+            tree.Insert(3);
+            tree.Insert(9);
+            tree.Insert(6);
+            tree.Insert(2);
+            tree.Insert(4);
+
+            // Act
+            var firstSmallerElement = tree.Ceiling(6);
+
+            // Assert
+            Assert.AreEqual(7, firstSmallerElement);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Ceiling_NotExistingBiggerElement()
+        {
+            // Arrange
+            var tree = new BinarySearchTree<int>();
+            tree.Insert(5);
+            tree.Insert(7);
+            tree.Insert(3);
+            tree.Insert(9);
+            tree.Insert(6);
+            tree.Insert(2);
+            tree.Insert(4);
+
+            // Act
+            var firstSmallerElement = tree.Ceiling(20);
         }
     }
 }
