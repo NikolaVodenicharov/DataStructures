@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
 {
+    private int nodeCount;
     private Node root;
 
     public BinarySearchTree()
@@ -24,16 +25,40 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
         this.PreOrderCopy(node.Right);
     }
 
+    // Size methods
     public int Count()
     {
-        throw new NotImplementedException();
+        return this.nodeCount;
+    }
+
+    public void Insert(T element)
+    {
+        this.root = this.InsertRecursively(element, this.root);
+    }
+    private Node InsertRecursively(T element, Node node)
+    {
+        if (node == null)
+        {
+            node = new Node(element);
+            this.nodeCount++;
+        }
+        else if (element.CompareTo(node.Value) < 0)
+        {
+            node.Left = this.InsertRecursively(element, node.Left);
+        }
+        else if (element.CompareTo(node.Value) > 0)
+        {
+            node.Right = this.InsertRecursively(element, node.Right);
+        }
+
+        return node;
     }
 
     public void DeleteMin()
     {
         if (this.root == null)
         {
-            return;
+            throw new InvalidOperationException("The collection is empty.");
         }
 
         Node current = this.root;
@@ -52,6 +77,8 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
         {
             parent.Left = current.Right;
         }
+
+        nodeCount--;
     }
     public void DeleteMax()
     {
@@ -76,11 +103,15 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
         {
             this.root = this.root.Left;
         }
+
+        nodeCount--;
     }
     public void Delete(T element)
     {
         throw new NotImplementedException();
     }
+
+
 
     public void EachInOrder(Action<T> action)
     {
@@ -96,28 +127,6 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
         this.EachInOrder(node.Left, action);
         action(node.Value);
         this.EachInOrder(node.Right, action);
-    }
-
-    public void Insert(T element)
-    {
-        this.root = this.Insert(element, this.root);
-    }
-    private Node Insert(T element, Node node)
-    {
-        if (node == null)
-        {
-            node = new Node(element);
-        }
-        else if (element.CompareTo(node.Value) < 0)
-        {
-            node.Left = this.Insert(element, node.Left);
-        }
-        else if (element.CompareTo(node.Value) > 0)
-        {
-            node.Right = this.Insert(element, node.Right);
-        }
-
-        return node;
     }
 
     public int Rank(T element)
