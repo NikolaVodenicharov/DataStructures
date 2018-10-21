@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
 {
+    private const string EmptyCollectionMessage = "The collection is empty.";
     private int nodeCount;
     private Node root;
 
@@ -24,8 +25,7 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
         this.PreOrderCopy(node.Left);
         this.PreOrderCopy(node.Right);
     }
-
-    // Size methods
+  
     public int Count()
     {
         return this.nodeCount;
@@ -58,7 +58,7 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
     {
         if (this.root == null)
         {
-            throw new InvalidOperationException("The collection is empty.");
+            throw new InvalidOperationException(EmptyCollectionMessage);
         }
 
         Node current = this.root;
@@ -84,7 +84,7 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
     {
         if (this.root == null)
         {
-            throw new InvalidOperationException("The collection is empty.");
+            throw new InvalidOperationException(EmptyCollectionMessage);
         }
 
         Node parent = null;
@@ -110,8 +110,6 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
     {
         throw new NotImplementedException();
     }
-
-
 
     public void EachInOrder(Action<T> action)
     {
@@ -149,12 +147,7 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
 
         if (compared > 0)
         {
-            var left = this.RankRecursively(element, node.Left);
-            var right = this.RankRecursively(element, node.Right);
-            var result = 1 + left + right;
-            return result;
-
-            // return 1 + this.RankRecursively(element, node.Left) + this.RankRecursively(element, node.Right);
+            return 1 + this.RankRecursively(element, node.Left) + this.RankRecursively(element, node.Right);
         }
 
         return 0; // something different from 0 ?
@@ -239,7 +232,26 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
 
     public T Floor(T element)
     {
-        throw new NotImplementedException();
+        if (this.root == null)
+        {
+            throw new InvalidOperationException(EmptyCollectionMessage);
+        }
+
+        Node current = this.root;
+
+        while (current != null)
+        {
+            if (current.Value.CompareTo(element) < 0)
+            {
+                return current.Value;
+            }
+            else
+            {
+                current = current.Left;
+            }
+        }
+
+        throw new InvalidOperationException("There is no element smaller that given.");
     }
 
     private class Node
