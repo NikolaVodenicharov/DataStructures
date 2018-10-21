@@ -158,6 +158,54 @@
         }
 
 
+        [TestMethod]
+        public void Rank_SomeSmallerNumbers()
+        {
+            // Arrange
+            var tree = new BinarySearchTree<int>();
+            tree.Insert(17);
+            tree.Insert(9);
+            tree.Insert(5);
+            tree.Insert(11);
+            tree.Insert(10);
+            tree.Insert(14);
+            tree.Insert(2);
+            tree.Insert(7);
+            tree.Insert(6);
+            tree.Insert(8);
+            tree.Insert(1);
+            tree.Insert(3);
 
+            // Act
+            var rank = tree.Rank(10);
+
+            // Assert
+            Assert.AreEqual(8, rank);
+        }
+
+        [TestMethod]
+        public void Rank_NoSmallerNumbers()
+        {
+            // Arrange
+            var tree = new BinarySearchTree<int>();
+            tree.Insert(17);
+            tree.Insert(9);
+            tree.Insert(5);
+            tree.Insert(11);
+            tree.Insert(10);
+            tree.Insert(14);
+            tree.Insert(2);
+            tree.Insert(7);
+            tree.Insert(6);
+            tree.Insert(8);
+            tree.Insert(1);
+            tree.Insert(3);
+
+            // Act
+            var rank = tree.Rank(1);
+
+            // Assert
+            Assert.AreEqual(0, rank);
+        }
     }
 }

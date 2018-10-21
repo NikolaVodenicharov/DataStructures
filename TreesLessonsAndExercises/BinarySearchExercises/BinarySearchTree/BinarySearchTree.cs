@@ -131,7 +131,33 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
 
     public int Rank(T element)
     {
-        throw new NotImplementedException();
+        return this.RankRecursively(element, this.root);
+    }
+    private int RankRecursively(T element, Node node)
+    {
+        if (node == null)
+        {
+            return 0;
+        }
+
+        var compared = element.CompareTo(node.Value);
+
+        if (compared < 0)
+        {
+            return this.RankRecursively(element, node.Left);
+        }
+
+        if (compared > 0)
+        {
+            var left = this.RankRecursively(element, node.Left);
+            var right = this.RankRecursively(element, node.Right);
+            var result = 1 + left + right;
+            return result;
+
+            // return 1 + this.RankRecursively(element, node.Left) + this.RankRecursively(element, node.Right);
+        }
+
+        return 0; // something different from 0 ?
     }
 
     public IEnumerable<T> Range(T startRange, T endRange)
