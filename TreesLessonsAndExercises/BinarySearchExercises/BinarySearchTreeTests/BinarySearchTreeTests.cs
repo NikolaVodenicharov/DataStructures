@@ -77,6 +77,34 @@
         }
 
         [TestMethod]
+        public void Coutn_AfterDelete()
+        {
+            // Arrange
+            var tree = new BinarySearchTree<int>();
+            tree.Insert(4);
+
+            tree.Insert(9);
+            tree.Insert(2);
+
+            tree.Insert(7);
+            tree.Insert(10);
+
+            tree.Insert(5);
+            tree.Insert(8);
+
+            tree.Insert(6);
+
+            tree.Insert(1);
+            tree.Insert(3);
+
+            // Act
+            tree.Delete(4);
+
+            // Assert
+            Assert.AreEqual(9, tree.Count());
+        }
+
+        [TestMethod]
         public void Insert_MultipleInsertTraverseInOrder()
         {
             // Arrange
@@ -155,6 +183,38 @@
 
             // Act
             tree.DeleteMax();
+        }
+
+        [TestMethod]
+        public void Delete()
+        {
+            // Arrange
+            var tree = new BinarySearchTree<int>();
+            tree.Insert(4);
+
+            tree.Insert(9);
+            tree.Insert(2);
+
+            tree.Insert(7);
+            tree.Insert(10);
+
+            tree.Insert(5);
+            tree.Insert(8);
+
+            tree.Insert(6);
+
+            tree.Insert(1);
+            tree.Insert(3);
+
+            // Act
+            tree.Delete(4);
+
+            var actualElements = new List<int>();
+            tree.EachInOrder(actualElements.Add);
+
+            // Assert
+            var expectedElements = new int[] { 1, 2, 3, 5, 6, 7, 8, 9, 10 };
+            CollectionAssert.AreEqual(expectedElements, actualElements);
         }
 
 

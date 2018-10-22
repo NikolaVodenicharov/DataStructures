@@ -78,7 +78,7 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
             parent.Left = current.Right;
         }
 
-        nodeCount--;
+        this.nodeCount--;
     }
     public void DeleteMax()
     {
@@ -104,11 +104,56 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
             this.root = this.root.Left;
         }
 
-        nodeCount--;
+        this.nodeCount--;
     }
     public void Delete(T element)
     {
-        throw new NotImplementedException();
+        this.root = DeleteRecursively(element, this.root);
+        this.nodeCount--;
+    }
+    private Node DeleteRecursively(T element, Node node)
+    {
+        if (node == null)
+        {
+            return null;
+        }
+
+        var comparedValue = node.Value.CompareTo(element);
+
+        if (comparedValue > 0)
+        {
+            node.Left = this.DeleteRecursively(element, node.Left);
+        }
+        else if (comparedValue < 0)
+        {
+            node.Right = this.DeleteRecursively(element, node.Right);   
+        }
+        else
+        {
+            if (node.Left == null)
+            {
+                return node.Right;
+            }
+            else if (node.Right == null)
+            {
+                return node.Left;
+            }
+
+            node.Value = FindMinValue(node.Right);
+            node.Right = this.DeleteRecursively(node.Value, node.Right);
+        }
+
+        return node;
+    }
+    private T FindMinValue(Node node)
+    {
+        var current = node;
+        while (current.Left != null)
+        {
+            current = current.Left;
+        }
+
+        return current.Value;
     }
 
     public void EachInOrder(Action<T> action)
@@ -278,7 +323,7 @@ public class BinarySearchTree<T> : IBinarySearchTree<T> where T:IComparable
             this.Value = value;
         }
 
-        public T Value { get; }
+        public T Value { get; set; }
         public Node Left { get; set; }
         public Node Right { get; set; }
     }
