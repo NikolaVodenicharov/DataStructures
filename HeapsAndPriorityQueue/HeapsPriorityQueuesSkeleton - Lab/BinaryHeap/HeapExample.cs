@@ -5,7 +5,7 @@ public class HeapExample
     static void Main()
     {
         Console.WriteLine("Created an empty heap.");
-        var heap = new BinaryHeap<int>();
+        var heap = new Parent<int>();
         heap.Insert(5);
         heap.Insert(8);
         heap.Insert(1);

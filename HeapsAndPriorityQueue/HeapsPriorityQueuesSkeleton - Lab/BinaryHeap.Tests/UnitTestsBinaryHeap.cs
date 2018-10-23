@@ -11,7 +11,7 @@ namespace BinaryHeap.Tests
         public void Insert_Single_TestCount()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             heap.Insert(3);
@@ -24,7 +24,7 @@ namespace BinaryHeap.Tests
         public void Insert_Single_TestPeek()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             heap.Insert(3);
@@ -37,7 +37,7 @@ namespace BinaryHeap.Tests
         public void Insert_Multiple_TestCount()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             // Assert
@@ -55,7 +55,7 @@ namespace BinaryHeap.Tests
         public void Insert_Multiple_TestPeek()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             // Assert
@@ -82,7 +82,7 @@ namespace BinaryHeap.Tests
         public void Pull_Single_TestCount()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             heap.Insert(3);
@@ -97,7 +97,7 @@ namespace BinaryHeap.Tests
         public void Pull_Single_TestElement()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             heap.Insert(3);
@@ -110,7 +110,7 @@ namespace BinaryHeap.Tests
         public void Pull_Multiple_TestCount()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             heap.Insert(5);
@@ -128,7 +128,7 @@ namespace BinaryHeap.Tests
         public void Pull_Multiple_TestElements()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             heap.Insert(3);
@@ -148,7 +148,7 @@ namespace BinaryHeap.Tests
         public void Pull_EmptyHeap()
         {
             // Arrange
-            var heap = new BinaryHeap<int>();
+            var heap = new Parent<int>();
 
             // Act
             heap.Pull();
