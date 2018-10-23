@@ -35,7 +35,7 @@ public class TestHeapSort
     public void Sort_MultipleElements()
     {
         // Arrange
-        int[] arr = new int[1000];
+        int[] arr = new int[10];
         int element = arr.Length - 1;
         for (int i = 0; i < arr.Length; i++)
         {
@@ -46,7 +46,7 @@ public class TestHeapSort
         Heap<int>.Sort(arr);
 
         // Assert
-        int[] exp = new int[1000];
+        int[] exp = new int[10];
         for (int i = 0; i < exp.Length; i++)
         {
             exp[i] = i;
