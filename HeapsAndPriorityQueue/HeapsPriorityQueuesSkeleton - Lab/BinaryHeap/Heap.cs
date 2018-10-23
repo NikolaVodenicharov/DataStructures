@@ -5,7 +5,7 @@ public static class Heap<T> where T : IComparable<T>
     public static void Sort(T[] arr)
     {
         RearrangeArrayToHeap(arr);
-        SortBySize(arr);
+        OrderAscending(arr);
     }
 
     private static void RearrangeArrayToHeap(T[] arr)
@@ -58,21 +58,18 @@ public static class Heap<T> where T : IComparable<T>
     {
         return arr[index1].CompareTo(arr[index2]) < 0;
     }
-    private static void SwapElements(T[] arr, int parentIndex, int largestElementIndex)
+    private static void SwapElements(T[] arr, int index1, int index2)
     {
-        var temporary = arr[parentIndex];
-        arr[parentIndex] = arr[largestElementIndex];
-        arr[largestElementIndex] = temporary;
+        var temporary = arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temporary;
     }
 
-    private static void SortBySize(T[] arr)
+    private static void OrderAscending(T[] arr)
     {
         for (int i = arr.Length - 1; i >= 0; i--)
         {
-            var temporary = arr[0];
-            arr[0] = arr[i];
-            arr[i] = temporary;
-
+            SwapElements(arr, 0, i);
             Heapify(arr, i, 0);
         }
     }
