@@ -10,7 +10,9 @@ public class Playground
                     { '-', '-', '-', '-', 'W', 'W', '-', '-' },
                     { '-', '-', '-', 'P', 'W', '-', '-', '-' },
                     { '-', '-', '-', '-', '-', '-', '-', '-' }
-         };
+    };
+
+    
 
     static void Main()
     {
@@ -30,10 +32,9 @@ public class Playground
         }
 
         PrintMap();
-
     }
 
-    private static char[,] ReadMap()
+    public static char[,] ReadMap()
     {
         var n = int.Parse(Console.ReadLine());
         var map = new char[n, n];
@@ -49,7 +50,7 @@ public class Playground
         return map;
     }
 
-    static Node FindGoal(char goal)
+    public static Node FindGoal(char goal)
     {
         for (int row = 0; row < map.GetLength(0); row++)
         {
@@ -65,7 +66,7 @@ public class Playground
         throw new ArgumentException("Object not present on map");
     }
 
-    static void PrintMap()
+    public static void PrintMap()
     {
         for (int row = 0; row < map.GetLength(0); row++)
         {

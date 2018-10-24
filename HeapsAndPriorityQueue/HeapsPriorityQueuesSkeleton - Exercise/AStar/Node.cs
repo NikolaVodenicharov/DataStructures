@@ -10,7 +10,12 @@ public class Node : IComparable<Node>
 
     public int Row { get; set; }
     public int Col { get; set; }
-    public int F { get; set; }
+
+    public int G { get; set; }
+    public int H { get; set; }
+    public int F => this.G + this.H;
+
+    public Node PreviousNode { get; set; }
 
     public int CompareTo(Node other)
     {
