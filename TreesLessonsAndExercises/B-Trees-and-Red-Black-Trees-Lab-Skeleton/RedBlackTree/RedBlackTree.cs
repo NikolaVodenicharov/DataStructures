@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
 {
+    private const bool Red = true;
+    private const bool Black = false;
+
     private Node root;
 
     private Node FindElement(T element)
@@ -38,25 +41,6 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
         this.Insert(node.Value);
         this.PreOrderCopy(node.Left);
         this.PreOrderCopy(node.Right);
-    }
-
-    private Node Insert(T element, Node node)
-    {
-        if (node == null)
-        {
-            node = new Node(element);
-        }
-        else if (element.CompareTo(node.Value) < 0)
-        {
-            node.Left = this.Insert(element, node.Left);
-        }
-        else if (element.CompareTo(node.Value) > 0)
-        {
-            node.Right = this.Insert(element, node.Right);
-        }
-
-        node.Count = 1 + this.Count(node.Left) + this.Count(node.Right);
-        return node;
     }
 
     private void Range(Node node, Queue<T> queue, T startRange, T endRange)
@@ -113,10 +97,88 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
     public RedBlackTree()
     {
     }
+    private bool IsRed(Node node)
+    {
+        if (node == null)
+        {
+            return false;
+        }
+
+        return node.Color;
+    }
+    private Node RightRotation(Node node)
+    {
+        var subTreeRoot = node.Left;
+        node.Left = subTreeRoot.Right;
+        subTreeRoot.Right = node;
+
+        subTreeRoot.Color = node.Color;
+        node.Color = Red;
+
+        subTreeRoot.Count = node.Count;
+        node.Count = 1 + Count(node.Left) + Count(node.Right);
+
+        return subTreeRoot;
+
+    }
+    private Node LeftRotation(Node node)
+    {
+        var subTreeRoot = node.Right;
+        node.Right = subTreeRoot.Left;
+        subTreeRoot.Right = node;
+
+        subTreeRoot.Color = node.Color;
+        node.Color = Red;
+
+        subTreeRoot.Count = node.Count;
+        node.Count = 1 + Count(node.Left) + Count(node.Right);
+
+        return subTreeRoot;
+    }
+    private void FlipColors (Node node)
+    {
+        node.Color = Red;
+        node.Left.Color = Black;
+        node.Right.Color = Black;
+    }
 
     public void Insert(T element)
     {
-        this.root = this.Insert(element, this.root);
+        this.root = this.InsertRecursively(element, this.root);
+        this.root.Color = Black;
+    }
+    private Node InsertRecursively(T element, Node node)
+    {
+        if (node == null)
+        {
+            node = new Node(element, Red);
+        }
+        else if (element.CompareTo(node.Value) < 0)
+        {
+            node.Left = this.InsertRecursively(element, node.Left);
+        }
+        else if (element.CompareTo(node.Value) > 0)
+        {
+            node.Right = this.InsertRecursively(element, node.Right);
+        }
+
+        if (!this.IsRed(node.Left) && this.IsRed(node.Right))
+        {
+            this.LeftRotation(node);
+        }
+
+        if (this.IsRed(node.Left) && this.IsRed(node.Left.Left))
+        {
+            this.RightRotation(node);
+        }
+
+        if (this.IsRed(node.Left) && this.IsRed(node.Right))
+        {
+            this.FlipColors(node);
+        }
+
+        node.Count = 1 + this.Count(node.Left) + this.Count(node.Right);
+        return node;
     }
 
     public bool Contains(T element)
@@ -147,7 +209,6 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
 
         this.root = this.DeleteMin(this.root);
     }
-
     private Node DeleteMin(Node node)
     {
         if (node.Left == null)
@@ -178,7 +239,6 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
         }
         this.root = this.Delete(element, this.root);
     }
-
     private Node Delete(T element, Node node)
     {
         if (node == null)
@@ -217,7 +277,6 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
 
         return node;
     }
-
     private Node FindMin(Node node)
     {
         if (node.Left == null)
@@ -237,7 +296,6 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
 
         this.root = this.DeleteMax(this.root);
     }
-
     private Node DeleteMax(Node node)
     {
         if (node.Right == null)
@@ -260,7 +318,6 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
     {
         return this.Rank(element, this.root);
     }
-
     private int Rank(T element, Node node)
     {
         if (node == null)
@@ -293,7 +350,6 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
 
         return node.Value;
     }
-
     private Node Select(int rank, Node node)
     {
         if (node == null)
@@ -328,11 +384,13 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
         return this.Select(this.Rank(element) - 1);
     }
 
+
     private class Node
     {
-        public Node(T value)
+        public Node(T value, bool color)
         {
             this.Value = value;
+            this.Color = color;
         }
 
         public T Value { get; }
@@ -340,6 +398,8 @@ public class RedBlackTree<T> : IBinarySearchTree<T> where T : IComparable
         public Node Right { get; set; }
 
         public int Count { get; set; }
+
+        public bool Color { get; set; }
     }
 
 }
