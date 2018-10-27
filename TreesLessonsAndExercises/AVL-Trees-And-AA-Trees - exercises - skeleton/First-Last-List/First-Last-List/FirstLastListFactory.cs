@@ -1,10 +1,13 @@
-﻿using System;
-
-public static class FirstLastListFactory
+﻿namespace First_Last_List
 {
-    public static IFirstLastList<T> Create<T>()
-        where T : IComparable<T>
+    using System;
+
+    public static class FirstLastListFactory
     {
-        return new FirstLastList<T>();
+        public static IFirstLastList<T> Create<T>()
+            where T : IComparable<T>
+        {
+            return new FirstLastList<T>();
+        }
     }
 }
