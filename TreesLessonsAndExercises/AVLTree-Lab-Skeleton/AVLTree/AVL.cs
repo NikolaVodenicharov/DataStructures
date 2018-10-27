@@ -17,37 +17,6 @@ public class AVL<T> where T : IComparable<T>
         var node = this.Search(this.root, item);
         return node != null;
     }
-
-    public void Insert(T item)
-    {
-        this.root = this.Insert(this.root, item);
-    }
-
-    public void EachInOrder(Action<T> action)
-    {
-        this.EachInOrder(this.root, action);
-    }
-
-    private Node<T> Insert(Node<T> node, T item)
-    {
-        if (node == null)
-        {
-            return new Node<T>(item);
-        }
-
-        int cmp = item.CompareTo(node.Value);
-        if (cmp < 0)
-        {
-            node.Left = this.Insert(node.Left, item);
-        }
-        else if (cmp > 0)
-        {
-            node.Right = this.Insert(node.Right, item);
-        }
-
-        return node;
-    }
-
     private Node<T> Search(Node<T> node, T item)
     {
         if (node == null)
@@ -68,15 +37,105 @@ public class AVL<T> where T : IComparable<T>
         return node;
     }
 
-    private void EachInOrder(Node<T> node, Action<T> action)
+    public void Insert(T item)
+    {
+        this.root = this.InsertRecursively(this.root, item);
+    }
+    private Node<T> InsertRecursively(Node<T> node, T item)
+    {
+        if (node == null)
+        {
+            return new Node<T>(item);
+        }
+
+        int compared = item.CompareTo(node.Value);
+        if (compared < 0)
+        {
+            node.Left = this.InsertRecursively(node.Left, item);
+        }
+        else if (compared > 0)
+        {
+            node.Right = this.InsertRecursively(node.Right, item);
+        }
+
+        node = Balance(node);
+        UpdateHeight(node);
+
+        return node;
+    }
+
+    public void EachInOrder(Action<T> action)
+    {
+        this.EachInOrderRecursively(this.root, action);
+    }
+    private void EachInOrderRecursively(Node<T> node, Action<T> action)
     {
         if (node == null)
         {
             return;
         }
 
-        this.EachInOrder(node.Left, action);
+        this.EachInOrderRecursively(node.Left, action);
         action(node.Value);
-        this.EachInOrder(node.Right, action);
+        this.EachInOrderRecursively(node.Right, action);
+    }
+
+    private static Node<T> Balance(Node<T> node)
+    {
+        int balance = FindHeight(node.Left) - FindHeight(node.Right);
+        if (balance < -1) // right subtree is heavier
+        {
+            if (FindHeight(node.Right.Left) > FindHeight(node.Right.Right))
+            {
+                node.Right = RotateRight(node.Right);
+            }
+
+            return RotateLeft(node);
+        }
+        else if (balance > 1) // left child is heavier
+        {
+            if (FindHeight(node.Left.Left) < FindHeight(node.Left.Right))
+            {
+                node.Left = RotateLeft(node.Left);
+            }
+
+            return RotateRight(node);
+        }
+
+        return node;
+    }
+    private static Node<T> RotateLeft(Node<T> node)
+    {
+        var subTreeRoot = node.Right;
+        node.Right = subTreeRoot.Left;
+        subTreeRoot.Left = node;
+
+        UpdateHeight(node);
+
+        return subTreeRoot;
+    }
+    private static Node<T> RotateRight(Node<T> node)
+    {
+        var subTreeRoot = node.Left;
+        node.Left = subTreeRoot.Right;
+        subTreeRoot.Right = node;
+
+        UpdateHeight(node);
+
+        return subTreeRoot;
+    }
+
+    private static void UpdateHeight(Node<T> node)
+    {
+        node.Height = Math.Max(FindHeight(node.Left), FindHeight(node.Right)) + 1;
+    }
+    private static int FindHeight(Node<T> node)
+    {
+        if (node == null)
+        {
+            return 0;
+        }
+
+        return node.Height;
     }
 }
