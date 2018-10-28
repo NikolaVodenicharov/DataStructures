@@ -26,7 +26,7 @@
 
         public void Add(T element)
         {
-            var node = new Node<T>(element);
+            var node = new Node<T>(nodes.Count, element);
             this.nodes.Add(node);
 
             this.root = this.InsertRecursively(this.root, node);
@@ -48,7 +48,7 @@
                 parent.Right = this.InsertRecursively(parent.Right, node);
             }
 
-            this.Balance(parent);
+            parent = this.Balance(parent);
             this.SetHeight(parent);
 
             return parent;
@@ -159,12 +159,27 @@
                 throw new ArgumentOutOfRangeException("Given count is bigger than the elements count");
             }
 
-            var sorted = new List<T>();
-            this.EachInOrderRecursively(this.root, sorted.Add);
-            sorted.Reverse();
+            var maxElements = new List<T>();
+            //this.MaxRecursively(this.root, maxElements, count);
+            //return maxElements;
 
-            return sorted.Take(count);
+            this.EachInOrderRecursively(this.root, maxElements.Add);
+            maxElements.Reverse();
+
+            return maxElements.Take(count);
         }
+        //private void MaxRecursively(Node<T> node, IList<T> list, int count)
+        //{
+        //    if (node == null || list.Count == count)
+        //    {
+        //        return;
+        //    }
+
+        //    this.MaxRecursively(node.Right, list, count);
+        //    list.Add(node.Value);
+        //    this.MaxRecursively(node.Left, list, count);
+        //}
+
         public IEnumerable<T> Min(int count)
         {
             if (count > this.nodes.Count)
@@ -172,15 +187,100 @@
                 throw new ArgumentOutOfRangeException("Given count is bigger than the elements count");
             }
 
-            var sorted = new List<T>();
-            this.EachInOrderRecursively(this.root, sorted.Add);
+            var minElements = new List<T>();
+            this.EachInOrderRecursively(this.root, minElements.Add);
+            return minElements.Take(count);
 
-            return sorted.Take(count);
+            //this.MinRecursively(this.root, minElements, count);
+            //return minElements;
         }
+        //private void MinRecursively(Node<T> node, IList<T> list, int count)
+        //{
+        //    if (node == null || list.Count == count)
+        //    {
+        //        return;
+        //    }
+
+        //    this.MinRecursively(node.Left, list, count);
+        //    list.Add(node.Value);
+        //    this.MinRecursively(node.Right, list, count);
+        //}
 
         public int RemoveAll(T element)
         {
-            throw new NotImplementedException();
+            this.DeleteRecursively(this.root, element);
+
+            return 1;
+            // throw new NotImplementedException();
+        }
+        private Node<T> DeleteRecursively(Node<T> node, T element)
+        {
+            if (node == null)
+            {
+                return null;
+            }
+
+            var compared = node.Value.CompareTo(element);
+            if (compared > 0)
+            {
+                node.Left = this.DeleteRecursively(node.Left, element);
+            }
+            else if (compared < 0)
+            {
+                node.Right = this.DeleteRecursively(node.Right, element);
+            }
+            else
+            {
+                node = DeleteNode(node);
+            }
+
+            return node;
+        }
+
+        private Node<T> DeleteNode(Node<T> node)
+        {
+            var hasLeftChild = node.Left != null;
+            var hasRightChild = node.Right != null;
+
+            if (hasLeftChild && hasRightChild)
+            {
+                var minNode = this.FindMinElement(node.Right);
+                node.Key = minNode.Key;
+                node.Value = minNode.Value;
+
+                node.Right = this.DeleteRecursively(node.Right, minNode.Value);
+            }
+            else if (!hasRightChild && !hasRightChild)
+            {
+                node = null;
+            }
+            else if (hasLeftChild)
+            {
+                node = node.Left;
+            }
+            else
+            {
+                node = node.Right;
+            }
+
+            if (node != null)
+            {
+                node = this.Balance(node);
+                this.SetHeight(node);
+            }
+
+            return node;
+        }
+
+        private Node<T> FindMinElement(Node<T> root)
+        {
+            var current = root;
+            while (current.Left != null)
+            {
+                current = current.Left;
+            }
+
+            return current;
         }
 
         private void EachInOrderRecursively(Node<T> node, Action<T> action)
@@ -194,6 +294,8 @@
             action(node.Value);
             this.EachInOrderRecursively(node.Right, action);
         }
+
+
 
         //public int Count
         //{

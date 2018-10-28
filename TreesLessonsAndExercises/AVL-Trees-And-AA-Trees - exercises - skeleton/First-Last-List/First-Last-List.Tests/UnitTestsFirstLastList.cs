@@ -528,7 +528,7 @@ public class UnitTestsFirstLastList
         items.Add(77);
         items.Add(10);
         items.Add(-2);
-        items.Add(10);
+        //items.Add(10);
         items.Add(7);
 
         // Act

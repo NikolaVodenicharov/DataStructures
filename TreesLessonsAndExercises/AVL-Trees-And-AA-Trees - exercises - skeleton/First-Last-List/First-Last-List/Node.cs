@@ -4,12 +4,14 @@
 
     public class Node<T> where T : IComparable<T>
     {
-        public Node (T value)
+        public Node (int key, T value)
         {
+            this.Key = key;
             this.Value = value;
             this.Height = 1;
         }
 
+        public int Key { get; set; }
         public T Value { get; set; }
         public int Height { get; set; }
         public Node<T> Left { get; set; }
@@ -17,7 +19,19 @@
 
         public int CompareTo(Node<T> other)
         {
-            return this.Value.CompareTo(other.Value);
+            if (other == null)
+            {
+                return 1;
+            }
+
+            var result = this.Value.CompareTo(other.Value);
+
+            if (result == 0)
+            {
+                result = this.Key.CompareTo(other.Key) * -1;
+            }
+
+            return result;
         }
     }
 
