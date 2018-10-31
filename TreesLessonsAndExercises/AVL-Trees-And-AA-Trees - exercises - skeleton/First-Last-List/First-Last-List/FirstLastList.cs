@@ -93,10 +93,6 @@ public class FirstLastList<T> : IFirstLastList<T> where T : IComparable<T>
         {
             this.insertOrder.Remove(item);
         }
-        //for (int i = 0; i < count; i++)
-        //{
-        //    this.insertOrder.Remove(element);
-        //}
 
         var count = this.minValueOrder.RemoveAllCopies(node);
         this.maxValueOrder.RemoveAllCopies(node);

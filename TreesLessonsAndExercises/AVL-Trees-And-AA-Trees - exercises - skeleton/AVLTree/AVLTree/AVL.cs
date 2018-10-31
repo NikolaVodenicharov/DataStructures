@@ -88,19 +88,19 @@ public class AVL<T> where T : IComparable<T>
             var hasLeftChild = node.Left != null;
             var hasRightChild = node.Right != null;
 
-            if (hasLeftChild && hasRightChild)
+            if (node.Left == null)
+            {
+                node = node.Right;
+            }
+            else if (node.Right == null)
+            {
+                node = node.Left; // if left is null and right is null, the node will be null;
+            }
+            else
             {
                 var minNode = this.FindMinValueNode(node.Right);
                 node.Value = minNode.Value;
                 node.Right = this.DeleteRecursively(node.Right, minNode.Value);
-            }
-            else if (hasLeftChild)
-            {
-                node = node.Left;
-            }
-            else
-            {
-                node = node.Right;  // if node has only righ child or no child;
             }
         }
 
