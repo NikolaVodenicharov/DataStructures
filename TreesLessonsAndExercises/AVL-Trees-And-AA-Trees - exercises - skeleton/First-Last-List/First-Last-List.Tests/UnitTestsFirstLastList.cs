@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using First_Last_List;
 
 [TestClass]
 public class UnitTestsFirstLastList
@@ -528,7 +527,7 @@ public class UnitTestsFirstLastList
         items.Add(77);
         items.Add(10);
         items.Add(-2);
-        //items.Add(10);
+        items.Add(10);
         items.Add(7);
 
         // Act
