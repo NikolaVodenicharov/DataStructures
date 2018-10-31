@@ -17,81 +17,6 @@ public class AVL<T> where T : IComparable<T>
         var node = this.Search(this.root, item);
         return node != null;
     }
-
-    public void Insert(T item)
-    {
-        this.root = this.Insert(this.root, item);
-    }
-
-    public void Delete(int v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void DeleteMin()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void EachInOrder(Action<T> action)
-    {
-        this.EachInOrder(this.root, action);
-    }
-
-    private Node<T> Insert(Node<T> node, T item)
-    {
-        if (node == null)
-        {
-            return new Node<T>(item);
-        }
-
-        int cmp = item.CompareTo(node.Value);
-        if (cmp < 0)
-        {
-            node.Left = this.Insert(node.Left, item);
-        }
-        else if (cmp > 0)
-        {
-            node.Right = this.Insert(node.Right, item);
-        }
-
-        node = Balance(node);
-        UpdateHeight(node);
-        return node;
-    }
-
-    private Node<T> Balance(Node<T> node)
-    {
-        var balance = Height(node.Left) - Height(node.Right);
-        if (balance > 1)
-        {
-            var childBalance = Height(node.Left.Left) - Height(node.Left.Right);
-            if (childBalance < 0)
-            {
-                node.Left = RotateLeft(node.Left);
-            }
-
-            node = RotateRight(node);
-        }
-        else if (balance < -1)
-        {
-            var childBalance = Height(node.Right.Left) - Height(node.Right.Right);
-            if (childBalance > 0)
-            {
-                node.Right = RotateRight(node.Right);
-            }
-
-            node = RotateLeft(node);
-        }
-
-        return node;
-    }
-
-    private void UpdateHeight(Node<T> node)
-    {
-        node.Height = Math.Max(Height(node.Left), Height(node.Right)) + 1;
-    }
-
     private Node<T> Search(Node<T> node, T item)
     {
         if (node == null)
@@ -112,6 +37,118 @@ public class AVL<T> where T : IComparable<T>
         return node;
     }
 
+    public void Insert(T item)
+    {
+        this.root = this.InsertRecursively(this.root, item);
+    }
+    private Node<T> InsertRecursively(Node<T> node, T item)
+    {
+        if (node == null)
+        {
+            return new Node<T>(item);
+        }
+
+        int compared = item.CompareTo(node.Value);
+        if (compared < 0)
+        {
+            node.Left = this.InsertRecursively(node.Left, item);
+        }
+        else if (compared > 0)
+        {
+            node.Right = this.InsertRecursively(node.Right, item);
+        }
+
+        node = Balance(node);
+        UpdateHeight(node);
+        return node;
+    }
+
+    public void Delete(T element)
+    {
+        this.root = this.DeleteRecursively(this.root, element);
+    }
+    private Node<T> DeleteRecursively(Node<T> node, T element)
+    {
+        if (node == null)
+        {
+            return null;
+        }
+
+        var compared = node.Value.CompareTo(element);
+        if (compared > 0)
+        {
+            node.Left = this.DeleteRecursively(node.Left, element);
+        }
+        else if (compared < 0)
+        {
+            node.Right = this.DeleteRecursively(node.Right, element);
+        }
+        else
+        {
+            var hasLeftChild = node.Left != null;
+            var hasRightChild = node.Right != null;
+
+            if (hasLeftChild && hasRightChild)
+            {
+                var minNode = this.FindMinValueNode(node.Right);
+                node.Value = minNode.Value;
+                node.Right = this.DeleteRecursively(node.Right, minNode.Value);
+            }
+            else if (hasLeftChild)
+            {
+                node = node.Left;
+            }
+            else
+            {
+                node = node.Right;  // if node has only righ child or no child;
+            }
+        }
+
+        node = Balance(node);
+        UpdateHeight(node);
+        return node;
+    }
+    private Node<T> FindMinValueNode (Node<T> node)
+    {
+        var current = node;
+        while (current.Left != null)
+        {
+            current = current.Left;
+        }
+
+        return current;
+    }
+
+    public void DeleteMin()
+    {
+        if (this.root == null)
+        {
+            return;
+        }
+        else if (this.root.Left == null)
+        {
+            this.root = this.root.Right;
+            return;
+        }
+
+        var node = this.root;
+        while (node.Left != null)
+        {
+            if (node.Left.Left == null)
+            {
+                break;
+            }
+
+            node = node.Left;
+        }
+
+        node.Left = node.Left.Right;
+    }
+
+    public void EachInOrder(Action<T> action)
+    {
+        this.EachInOrder(this.root, action);
+    }
     private void EachInOrder(Node<T> node, Action<T> action)
     {
         if (node == null)
@@ -124,7 +161,38 @@ public class AVL<T> where T : IComparable<T>
         this.EachInOrder(node.Right, action);
     }
 
-    private int Height(Node<T> node)
+    private Node<T> Balance(Node<T> node)
+    {
+        if (node == null)
+        {
+            return null;
+        }
+
+        var balance = FindHeight(node.Left) - FindHeight(node.Right);
+        if (balance > 1)
+        {
+            var childBalance = FindHeight(node.Left.Left) - FindHeight(node.Left.Right);
+            if (childBalance < 0)
+            {
+                node.Left = RotateLeft(node.Left);
+            }
+
+            node = RotateRight(node);
+        }
+        else if (balance < -1)
+        {
+            var childBalance = FindHeight(node.Right.Left) - FindHeight(node.Right.Right);
+            if (childBalance > 0)
+            {
+                node.Right = RotateRight(node.Right);
+            }
+
+            node = RotateLeft(node);
+        }
+
+        return node;
+    }
+    private int FindHeight(Node<T> node)
     {
         if (node == null)
         {
@@ -133,7 +201,6 @@ public class AVL<T> where T : IComparable<T>
 
         return node.Height;
     }
-
     private Node<T> RotateRight(Node<T> node)
     {
         var left = node.Left;
@@ -144,7 +211,6 @@ public class AVL<T> where T : IComparable<T>
 
         return left;
     }
-
     private Node<T> RotateLeft(Node<T> node)
     {
         var right = node.Right;
@@ -155,4 +221,14 @@ public class AVL<T> where T : IComparable<T>
 
         return right;
     }
+
+    private void UpdateHeight(Node<T> node)
+    {
+        if (node == null)
+        {
+            return;
+        }
+
+        node.Height = Math.Max(FindHeight(node.Left), FindHeight(node.Right)) + 1;
+    }  
 }
