@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D852AD35-E7FC-499B-A913-11479BB76674}</ProjectGuid>
+    <ProjectGuid>{FA322455-5985-4A1C-B51B-F3A950BA5889}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Hash_Table.Tests</RootNamespace>
-    <AssemblyName>HashTable.Tests</AssemblyName>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HashTableTests</RootNamespace>
+    <AssemblyName>HashTableTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -49,14 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AVLTreeUnitTests.cs" />
-    <Compile Include="UnitTestsHashTable.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HashTable\HashTable.csproj">
-      <Project>{2cb50f92-35af-47e5-ba6f-02446aacd536}</Project>
-      <Name>DoublyLinkedList</Name>
-    </ProjectReference>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
