@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashTable", "HashTable\Hash
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashTable.Tests", "HashTable.Tests\HashTable.Tests.csproj", "{D852AD35-E7FC-499B-A913-11479BB76674}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryImplementation", "DictionaryImplementation\DictionaryImplementation.csproj", "{81A1368A-7D95-4F8E-A910-DE8E380229D0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{D852AD35-E7FC-499B-A913-11479BB76674}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D852AD35-E7FC-499B-A913-11479BB76674}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D852AD35-E7FC-499B-A913-11479BB76674}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81A1368A-7D95-4F8E-A910-DE8E380229D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81A1368A-7D95-4F8E-A910-DE8E380229D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81A1368A-7D95-4F8E-A910-DE8E380229D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81A1368A-7D95-4F8E-A910-DE8E380229D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
