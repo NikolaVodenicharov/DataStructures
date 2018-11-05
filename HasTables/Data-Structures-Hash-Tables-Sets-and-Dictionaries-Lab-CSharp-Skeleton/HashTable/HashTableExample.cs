@@ -5,24 +5,24 @@ class Example
 {
     static void Main()
     {
-        var hardCode = "SoftUni rocks";
-        var dict = new MyDictionary<Char, int>();
-        var chars = hardCode.ToCharArray();
+        //var hardCode = "SoftUni rocks";
+        //var dict = new MyDictionary<Char, int>();
+        //var chars = hardCode.ToCharArray();
 
-        foreach (var c in chars)
-        {
-            if (!dict.ContainsKey(c))
-            {
-                dict[c] = 0;
-            }
+        //foreach (var c in chars)
+        //{
+        //    if (!dict.ContainsKey(c))
+        //    {
+        //        dict[c] = 0;
+        //    }
 
-            dict[c] += 1;
-        }
+        //    dict[c] += 1;
+        //}
 
-        foreach (var kvp in dict)
-        {
-            Console.WriteLine($"{kvp.Key}: {kvp.Value} time/s");
-        }
+        //foreach (var kvp in dict)
+        //{
+        //    Console.WriteLine($"{kvp.Key}: {kvp.Value} time/s");
+        //}
 
         //HashTable<string, int> grades = new HashTable<string, int>();
 

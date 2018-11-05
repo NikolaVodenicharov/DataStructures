@@ -13,6 +13,11 @@ public class KeyValue<TKey, TValue>
 
     public override bool Equals(object other)
     {
+        if (other == null)
+        {
+            return false;
+        }
+
         KeyValue<TKey, TValue> element = (KeyValue<TKey, TValue>)other;
         bool equals = Object.Equals(this.Key, element.Key) && Object.Equals(this.Value, element.Value);
         return equals;

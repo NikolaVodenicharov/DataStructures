@@ -123,6 +123,7 @@
 
             return node;
         }
+
         private Node<T> FindMinNode(Node<T> node)
         {
             if (node == null)

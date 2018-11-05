@@ -38,12 +38,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AVLTree.cs" />
+    <Compile Include="BalancedOrderedSet.cs" />
     <Compile Include="HashTable.cs" />
     <Compile Include="HashTableExample.cs" />
     <Compile Include="KeyValue.cs" />
     <Compile Include="MyDictionary.cs" />
     <Compile Include="Node.cs" />
-    <Compile Include="OrderedSet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
