@@ -4,18 +4,6 @@ public class KdTree
 {
     private Node root;
 
-    public class Node
-    {
-        public Node(Point2D point)
-        {
-            this.Point = point;
-        }
-
-        public Point2D Point { get; set; }
-        public Node Left { get; set; }
-        public Node Right { get; set; }
-    }
-
     public Node Root
     {
         get
@@ -38,7 +26,6 @@ public class KdTree
     {
         this.EachInOrder(this.root, action);
     }
-
     private void EachInOrder(Node node, Action<Point2D> action)
     {
         if (node == null)
@@ -49,5 +36,17 @@ public class KdTree
         this.EachInOrder(node.Left, action);
         action(node.Point);
         this.EachInOrder(node.Right, action);
+    }
+
+    public class Node
+    {
+        public Node(Point2D point)
+        {
+            this.Point = point;
+        }
+
+        public Point2D Point { get; set; }
+        public Node Left { get; set; }
+        public Node Right { get; set; }
     }
 }
