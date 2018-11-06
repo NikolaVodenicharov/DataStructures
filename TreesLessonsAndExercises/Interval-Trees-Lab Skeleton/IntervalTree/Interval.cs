@@ -20,6 +20,19 @@ public class Interval
 
     public override bool Equals(object obj)
     {
+        if (obj == this)
+        {
+            return true;
+        }
+        else if (obj == null)
+        {
+            return false;
+        }
+        else if (obj.GetType() != this.GetType())
+        {
+            return false;
+        }
+
         var other = (Interval)obj;
         return this.Lo == other.Lo && this.Hi == other.Hi;
     }
@@ -33,7 +46,7 @@ public class Interval
     {
         if (hi < lo)
         {
-            throw new ArgumentException();
+            throw new ArgumentException($"Lower border of the interval ({lo}) is bigger than Higher border ({hi}).");
         }
     }
 }
